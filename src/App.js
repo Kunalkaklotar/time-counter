@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Timer from "./Timer";
+import { useState, useEffect } from "react";
 
 function App() {
+  let [check, setCheck] = useState(false);
+  let [count, setCount] = useState(0);
+  let id;
+  useEffect(() => {
+    if (check) {
+      id = setInterval(() => {
+        setCount(++count);
+      }, 1000);
+    }
+    else {
+      clearInterval(id);
+    }
+
+    return () => {
+      clearInterval(id);
+    };
+  }, [check, count]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Timer count={count} setCount={setCount} setCheck={setCheck} />
+    </>
   );
 }
 
